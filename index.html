@@ -39,6 +39,7 @@
     </div>
     <div class="goodsArea">
       <div class="menuBlock">
+        <div class="menu" @click="allProduct">全部商品</div>
         <div class="menu" v-for="(type, idx) of goodsType" :key="type" @click="filterItem(type, 'type')">
           {{ type }}
         </div>

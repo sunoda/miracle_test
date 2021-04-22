@@ -191,10 +191,13 @@ const App = {
     // 篩選
     let itemDetail = ref('')
     let itemType = ref('')
+    let filterText =ref('')
+
     const filterItem = (item, type) => {
       itemDetail.value = item
       itemType.value = type
     }
+
     let filterData = computed(() => {
       if(itemDetail.value && itemType.value){
         return goodList.filter(good => good[itemType.value] === itemDetail.value)
@@ -207,8 +210,10 @@ const App = {
     const clearText = () => {
       filterText.value = ''
     }
-
-    let filterText =ref('')
+    const allProduct = () => {
+      itemType.value = ''
+      itemDetail.value = ''
+    }
 
     // 開窗
     const popupGoods = reactive({
@@ -244,7 +249,7 @@ const App = {
     // 開啟計時器
     bannerSetInterval()
     countDownInterval()
-    return { images, bannerNow, bannerAdd, bannerMinus, bannerChange, time, scrollToTop, goodList, goodsType, goodsBrand, filterItem, filterData, filterText, clearText, openPopup, closePopup, popupGoods };
+    return { images, bannerNow, bannerAdd, bannerMinus, bannerChange, time, scrollToTop, goodList, goodsType, goodsBrand, filterItem, filterData, filterText, clearText, allProduct, openPopup, closePopup, popupGoods };
   }
 }
 
