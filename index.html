@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+  <title>Miracle</title>
+</head>
+<body>
+  <div id="app">
+    <div class="searchArea">
+      <div class="searchBar">
+        <i class="fas fa-search"></i>
+        <input type="text" class="search" placeholder="請輸入商品名稱" v-model="filterText">
+        <i class="fas fa-times-circle" @click="clearText"></i>
+      </div>
+    </div>
+    <div class="bannerArea">
+      <div class="banner" v-for="(img, index) of images" :key="index">
+        <img :src="img.src" alt="" v-show="index === bannerNow">
+      </div>
+      <div class="bannerAdd bannerArrow" @click="bannerAdd">
+        <i class="fas fa-chevron-circle-right"></i>
+      </div>
+      <div class="bannerMinus bannerArrow" @click="bannerMinus">
+        <i class="fas fa-chevron-circle-left"></i>
+      </div>
+      <div class="bannerDot">
+        <div class="bannerItem" v-for="(img, index) of images" :key="index" @click="bannerChange(index)">
+          <i class="fas fa-circle dot" v-show="index === bannerNow"></i>
+          <i class="far fa-circle dot" v-show="index !== bannerNow"></i>
+        </div>
+      </div>
+    </div>
+    <div class="countDownArea">
+      {{ time }} {{ filterText }}
+    </div>
+    <div class="goodsArea">
+      <div class="menuBlock">
+        <div class="menu" v-for="(type, idx) of goodsType" :key="type" @click="filterItem(type, 'type')">
+          {{ type }}
+        </div>
+        <div class="menu" v-for="(brand, idx) of goodsBrand" :key="brand" @click="filterItem(brand, 'brand')">
+          {{ brand }}
+        </div>
+      </div>
+      <div class="goodsBlock">
+        <div class="goods" v-for="(item, idx) of filterData" :key="item.name" @click="openPopup(item)">
+          <img :src="item.src" alt="">
+          <span> {{ item.name }} </span>
+        </div>
+      </div>
+    </div>
+    <div class="goTopArea" @click="scrollToTop()" >
+      <i class="fas fa-arrow-from-bottom"></i>
+    </div>
+
+    <div class="popupArea" v-show="popupGoods.toggle" @click="closePopup()">
+      <div class="popupGoods">
+        <img :src="popupGoods.src" alt="" />
+        <span>{{popupGoods.name}}</span>
+      </div>
+    </div>
+  </div>
+  <script src="./js/vue.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
