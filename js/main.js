@@ -202,7 +202,7 @@ const App = {
       if(itemDetail.value && itemType.value){
         return goodList.filter(good => good[itemType.value] === itemDetail.value)
       } else if(filterText.value){
-        return goodList.filter(good => good.name.includes(filterText.value))
+        return goodList.filter(good => good.name.toLowerCase().indexOf(filterText.value.toLowerCase()) > -1)
       } else {
         return goodList
       }
