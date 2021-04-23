@@ -1,4 +1,4 @@
-const { reactive, ref, computed, toRefs } = Vue;
+const { reactive, ref, computed, onUnmounted } = Vue;
 
 const App = {
   setup() {
@@ -23,11 +23,7 @@ const App = {
     const bannerMinus = () => {
       bannerNow.value <= 0 ? bannerNow.value = images.length -1 : bannerNow.value--
     };
-    const bannerSetInterval = () => {
-      setInterval(() => {
-        bannerNow.value >= images.length - 1 ? bannerNow.value = 0 : bannerNow.value++
-      }, 2000); 
-    };
+    const bannerSetInterval = setInterval(() =>  bannerNow.value >= images.length - 1 ? bannerNow.value = 0 : bannerNow.value++, 2000);
     const bannerChange = (index) => {
       bannerNow.value = index;
     }
@@ -42,11 +38,7 @@ const App = {
       let second = parseInt((countDown.value % 3600) % 60);
       time.value = `倒數 : ${hour}:${minute}:${second}`
     })
-    const countDownInterval = () => {
-      setInterval(() => {
-        countDownText()
-      }, 1000)
-    }
+    const countDownInterval = setInterval(() => countDownText(), 1000)
     // 商品清單
     const goodList = reactive([
       {
@@ -201,11 +193,11 @@ const App = {
     let filterData = computed(() => {
       if(itemDetail.value && itemType.value){
         return goodList.filter(good => good[itemType.value] === itemDetail.value)
-      } else if(filterText.value){
+      } 
+      if(filterText.value){
         return goodList.filter(good => good.name.toLowerCase().indexOf(filterText.value.toLowerCase()) > -1)
-      } else {
-        return goodList
       }
+      return goodList
     })
     const clearText = () => {
       filterText.value = ''
@@ -239,16 +231,15 @@ const App = {
     }
     
     const goodsType = computed(() => {
-      let type = goodList.map(item => item.type)
-      return [...new Set(type)]
+      return new Set(goodList.map(item => item.type))
     })
     const goodsBrand = computed(() => {
-      let brand = goodList.map(item => item.brand)
-      return [...new Set(brand)]
+      return new Set(goodList.map(item => item.brand))
     })
-    // 開啟計時器
-    bannerSetInterval()
-    countDownInterval()
+    onUnmounted(() => {
+      clearInterval(countDownInterval)
+      clearInterval(bannerSetInterval)
+    })
     return { images, bannerNow, bannerAdd, bannerMinus, bannerChange, time, scrollToTop, goodList, goodsType, goodsBrand, filterItem, filterData, filterText, clearText, allProduct, openPopup, closePopup, popupGoods };
   }
 }
